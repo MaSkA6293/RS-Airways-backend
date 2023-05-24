@@ -1,0 +1,82 @@
+[
+  {
+    "key": "AMS",
+    "name": "Amsterdam-Schiphol",
+    "city": "Amsterdam",
+    "gmt": "+1.0",
+    "country": "Netherlands",
+    "gps": "52.308869,4.764754"
+  },
+  {
+    "key": "ATH",
+    "name": "Eleftherios Venizelos",
+    "city": "Athens",
+    "gmt": "+2.0",
+    "country": "Greece",
+    "gps": "35.306072,25.409728"
+  },
+  {
+    "key": "BER",
+    "name": "Berlin Metropolitan Area",
+    "city": "Berlin",
+    "gmt": "+1.0",
+    "country": "Germany",
+    "gps": "-33.494545,-70.648122"
+  },
+  {
+    "key": "BRN",
+    "name": "Belp",
+    "city": "Berne",
+    "gmt": "+1.0",
+    "country": "Switzerland",
+    "gps": "46.895022,7.496827"
+  },
+  {
+    "key": "LIS",
+    "name": "Portela",
+    "city": "Lisbon",
+    "gmt": "+0.0",
+    "country": "Portugal",
+    "gps": "38.769452,-9.117694"
+  },
+  {
+    "key": "LHR",
+    "name": "London Heathrow",
+    "city": "London",
+    "gmt": "+0.0",
+    "country": "United Kingdom",
+    "gps": "51.469771,-0.449661"
+  },
+  {
+    "key": "MAD",
+    "name": "Barajas",
+    "city": "Madrid",
+    "gmt": "+1.0",
+    "country": "Spain",
+    "gps": "40.47207,-3.581709"
+  },
+  {
+    "key": "ORY",
+    "name": "Orly",
+    "city": "Paris",
+    "gmt": "+1.0",
+    "country": "France",
+    "gps": "48.742513,2.401619"
+  },
+  {
+    "key": "FCO",
+    "name": "Leonardo da Vinci International (Fiumicino)",
+    "city": "Rome",
+    "gmt": "+1.0",
+    "country": "Italy",
+    "gps": "-33.404571,-70.555219"
+  },
+  {
+    "key": "ARN",
+    "name": "Arlanda",
+    "city": "Stockholm",
+    "gmt": "+1.0",
+    "country": "Sweden",
+    "gps": "59.648979,17.92934"
+  }
+]
