@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateAirportDto } from '../dto/create-airport.dto';
+import { FlightEntity } from 'src/flight/entities/flight.entity';
 
 @Entity('airport')
 export class AirportEntity {
@@ -65,6 +66,12 @@ export class AirportEntity {
     nullable: false,
   })
   gps: string;
+
+  @OneToMany(() => FlightEntity, (flight) => flight.from)
+  flightsFrom: FlightEntity[];
+
+  @OneToMany(() => FlightEntity, (flight) => flight.to)
+  flightsTo: FlightEntity[];
 
   create(createAirportDto: CreateAirportDto) {
     this.id = uuidv4();

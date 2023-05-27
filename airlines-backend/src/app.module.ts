@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import dbConfig from './database/db-config';
 import { AirportModule } from './airport/airport.module';
+import { FlightModule } from './flight/flight.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AirportModule } from './airport/airport.module';
     }),
     TypeOrmModule.forRoot(dbConfig()),
     AirportModule,
+    FlightModule,
   ],
   controllers: [AppController],
   providers: [],

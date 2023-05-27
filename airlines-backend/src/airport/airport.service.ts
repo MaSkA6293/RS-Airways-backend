@@ -25,4 +25,21 @@ export class AirportService {
   async remove(id: string): Promise<void> {
     await this.airportsRepository.delete(id);
   }
+
+  async getAirportsById(
+    fromId: string,
+    toId: string,
+  ): Promise<{ from: AirportEntity; to: AirportEntity }> {
+    const data = [fromId, toId].map((id: string) =>
+      this.airportsRepository.findOne({
+        where: {
+          id,
+        },
+      }),
+    );
+
+    const [from, to] = await Promise.all(data);
+
+    return { from, to };
+  }
 }
