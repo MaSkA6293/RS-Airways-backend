@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { entity } from '../interfaces/interfaces';
-import { TARIFF } from 'src/flight/constants';
+import { PLANE_SPEED, TARIFF } from 'src/flight/constants';
+import { FlightEntity } from 'src/flight/entities/flight.entity';
 
 export const notFoundError = (
   name: entity,
@@ -18,3 +19,13 @@ export const getRandomIntInclusive = (min: number, max: number): number => {
 export const getPrice = (duration: number) => {
   return Math.floor(duration * TARIFF);
 };
+
+export const getRandomDate = () => {
+  const hour = getRandomIntInclusive(0, 23);
+  const minute = getRandomIntInclusive(0, 59);
+
+  return new Date().setHours(hour, minute);
+};
+
+export const getFlightDuration = (fromGps: string, toGps: string) =>
+  new FlightEntity().getDistance(fromGps, toGps) / PLANE_SPEED;

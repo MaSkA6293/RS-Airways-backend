@@ -6,8 +6,13 @@ import { SearchFlightDto } from './dto/search-flight.dto';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { AirportService } from 'src/airport/airport.service';
 import * as moment from 'moment';
-import { MOCK_FLIGHT_DAYS, PLANE_SPEED, SEATS_TOTAL } from './constants';
-import { getPrice, getRandomIntInclusive } from 'src/utils/utils';
+import { MOCK_FLIGHT_DAYS, SEATS_TOTAL } from './constants';
+import {
+  getFlightDuration,
+  getPrice,
+  getRandomDate,
+  getRandomIntInclusive,
+} from 'src/utils/utils';
 import { AirportEntity } from 'src/airport/entities/airport.entity';
 
 @Injectable()
@@ -77,12 +82,10 @@ export class FlightService {
 
     if (!airports) return undefined;
 
-    const distance = new FlightEntity().getDistance(
+    const flightDuration = getFlightDuration(
       airports.from.gps,
       airports.to.gps,
     );
-
-    const flightDuration = distance / PLANE_SPEED;
 
     const landingDate = moment(new Date(createFlightDto.takeOffDate))
       .add(flightDuration, 'hours')
@@ -102,35 +105,31 @@ export class FlightService {
     const airports: AirportEntity[] = await this.airportService.findAll();
 
     if (airports) {
-      const promiseArr = airports.reduce((prev, curr, index, arr) => {
+      const flightsArr = airports.reduce((prev, curr, index, arr) => {
         const promArr = [];
 
-        let next = arr[index + 1];
-        if (index + 1 > arr.length - 1) {
-          next = arr[0];
-        }
+        for (let i = 0; i < arr.length; i++) {
+          if (i === index) {
+            continue;
+          }
 
-        const duration =
-          new FlightEntity().getDistance(curr.gps, next.gps) / PLANE_SPEED;
+          for (let j = 0; j < MOCK_FLIGHT_DAYS; j++) {
+            const createFlightDto = {
+              fromId: curr.id,
+              toId: arr[i].id,
+              takeOffDate: moment(getRandomDate()).add(j, 'days').toDate(),
+              seatsAvailable: getRandomIntInclusive(0, SEATS_TOTAL),
+              seatsTotal: SEATS_TOTAL,
+              price: getPrice(getFlightDuration(curr.gps, arr[i].gps)),
+            } as CreateFlightDto;
 
-        for (let i = 0; i < MOCK_FLIGHT_DAYS; i++) {
-          const data = {
-            fromId: curr.id,
-            toId: next.id,
-            takeOffDate: moment(new Date()).add(i, 'days').toDate(),
-            seatsAvailable: getRandomIntInclusive(0, SEATS_TOTAL),
-            seatsTotal: SEATS_TOTAL,
-            price: getPrice(duration),
-          } as CreateFlightDto;
-
-          promArr.push(this.create(data));
+            promArr.push(this.create(createFlightDto));
+          }
         }
         return [...prev, promArr];
       }, []);
 
-      const data = await Promise.all(promiseArr);
-
-      return data;
+      return await Promise.all(flightsArr);
     }
     return undefined;
   }

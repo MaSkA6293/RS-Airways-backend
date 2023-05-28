@@ -17,11 +17,11 @@
   },
   {
     "key": "BER",
-    "name": "Berlin Metropolitan Area",
+    "name": "Berlin-Brandenburg Airport",
     "city": "Berlin",
     "gmt": "+1.0",
     "country": "Germany",
-    "gps": "-33.494545,-70.648122"
+    "gps": "52.364044189453125,13.50841999053955"
   },
   {
     "key": "BRN",

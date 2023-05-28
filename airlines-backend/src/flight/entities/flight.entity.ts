@@ -61,10 +61,14 @@ export class FlightEntity {
   })
   price: number;
 
-  @ManyToOne(() => AirportEntity, (airport) => airport.flightsFrom)
+  @ManyToOne(() => AirportEntity, (airport) => airport.flightsFrom, {
+    onDelete: 'SET NULL',
+  })
   from: AirportEntity;
 
-  @ManyToOne(() => AirportEntity, (airport) => airport.flightsTo)
+  @ManyToOne(() => AirportEntity, (airport) => airport.flightsTo, {
+    onDelete: 'SET NULL',
+  })
   to: AirportEntity;
 
   create(
