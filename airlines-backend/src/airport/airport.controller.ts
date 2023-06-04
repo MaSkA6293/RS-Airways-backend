@@ -29,8 +29,18 @@ export class AirportsController {
   @ApiOperation({ summary: 'Get all the airports' })
   @ApiResponse({ status: 200, type: [AirportEntity] })
   @Get()
-  findAll(): Promise<AirportEntity[] | []> {
+  async getAll(): Promise<AirportEntity[] | []> {
     return this.airportsService.findAll();
+  }
+
+  @ApiOperation({ summary: 'Get the airport by id' })
+  @ApiResponse({ status: 200, type: [AirportEntity] })
+  @Get()
+  @Get(':uuid')
+  findById(
+    @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
+  ): AirportEntity {
+    return airport;
   }
 
   @ApiOperation({ summary: 'Create a new airport' })
@@ -54,9 +64,9 @@ export class AirportsController {
   @Delete(':uuid')
   @HttpCode(204)
   async remove(
-    @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) id: string,
+    @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
   ): Promise<void> {
-    return await this.airportsService.remove(id);
+    return await this.airportsService.remove(airport.id);
   }
 
   @ApiOperation({ summary: 'Generate mock airports' })

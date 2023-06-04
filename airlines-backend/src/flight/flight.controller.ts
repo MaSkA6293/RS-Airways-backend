@@ -1,10 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpException,
   HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import {
@@ -17,6 +20,7 @@ import { SearchFlightDto } from './dto/search-flight.dto';
 import { FlightEntity } from './entities/flight.entity';
 import { FlightService } from './flight.service';
 import { CreateFlightDto } from './dto/create-flight.dto';
+import { FlightIsExistPipe } from './flight.isExist.pipe';
 
 @ApiTags('Flight')
 @Controller('flight')
@@ -45,9 +49,20 @@ export class FlightController {
     return this.flightService.getAllFlights();
   }
 
+  @ApiOperation({ summary: 'Get the flight by id' })
+  @ApiResponse({ status: 200, type: [FlightEntity] })
+  @Get()
+  @Get(':uuid')
+  findById(
+    @Param('uuid', ParseUUIDPipe, FlightIsExistPipe) flight: FlightEntity,
+  ): FlightEntity {
+    return flight;
+  }
+
   @ApiOperation({ summary: 'Create a new flight' })
   @ApiOkResponse({ status: 201, type: [FlightEntity] })
   @Post('create')
+  @HttpCode(201)
   async create(
     @Body() createFlightDto: CreateFlightDto,
   ): Promise<FlightEntity> {
@@ -59,6 +74,23 @@ export class FlightController {
       );
     }
     return createdFlight;
+  }
+
+  @ApiOperation({ summary: 'Remove an flight by id' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'The record was deleted successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'The airport with this id, does not exist',
+  })
+  @Delete(':uuid')
+  @HttpCode(204)
+  async remove(
+    @Param('uuid', ParseUUIDPipe, FlightIsExistPipe) flight: FlightEntity,
+  ): Promise<void> {
+    return await this.flightService.remove(flight.id);
   }
 
   @ApiOperation({ summary: 'Generate mock flights' })

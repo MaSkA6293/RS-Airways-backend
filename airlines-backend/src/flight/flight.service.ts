@@ -12,7 +12,7 @@ import {
   getPrice,
   getRandomDate,
   getRandomIntInclusive,
-} from 'src/utils/utils';
+} from 'src/utils';
 import { AirportEntity } from 'src/airport/entities/airport.entity';
 
 @Injectable()
@@ -132,5 +132,9 @@ export class FlightService {
       return await Promise.all(flightsArr);
     }
     return undefined;
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.flightRepository.delete(id);
   }
 }

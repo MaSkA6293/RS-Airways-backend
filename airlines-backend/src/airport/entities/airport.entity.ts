@@ -67,10 +67,10 @@ export class AirportEntity {
   })
   gps: string;
 
-  @OneToMany(() => FlightEntity, (flight) => flight.from)
+  @OneToMany(() => FlightEntity, (flight) => flight.from, { cascade: true })
   flightsFrom: FlightEntity[];
 
-  @OneToMany(() => FlightEntity, (flight) => flight.to)
+  @OneToMany(() => FlightEntity, (flight) => flight.to, { cascade: true })
   flightsTo: FlightEntity[];
 
   create(createAirportDto: CreateAirportDto) {

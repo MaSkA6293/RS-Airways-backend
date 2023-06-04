@@ -1,5 +1,5 @@
 import { OmitType } from '@nestjs/mapped-types';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, Length } from 'class-validator';
 import { AirportEntity } from '../entities/airport.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -9,7 +9,8 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: "Airport's contraction name",
   })
   @IsString()
-  @IsNotEmpty({ message: 'request body does not contain required field Key' })
+  @IsNotEmpty()
+  @Length(3, 5)
   key: string;
 
   @ApiProperty({
@@ -17,7 +18,8 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: 'Airport name',
   })
   @IsString()
-  @IsNotEmpty({ message: 'request body does not contain required field Name' })
+  @IsNotEmpty()
+  @Length(3, 15)
   name: string;
 
   @ApiProperty({
@@ -25,9 +27,8 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: 'Country name',
   })
   @IsString()
-  @IsNotEmpty({
-    message: 'request body does not contain required field Country',
-  })
+  @IsNotEmpty()
+  @Length(4, 15)
   country: string;
 
   @ApiProperty({
@@ -35,7 +36,8 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: 'City name',
   })
   @IsString()
-  @IsNotEmpty({ message: 'request body does not contain required field City' })
+  @IsNotEmpty()
+  @Length(4, 15)
   city: string;
 
   @ApiProperty({
@@ -43,7 +45,7 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: 'The time difference',
   })
   @IsString()
-  @IsNotEmpty({ message: 'request body does not contain required field GMT' })
+  @IsNotEmpty()
   gmt: string;
 
   @ApiProperty({
@@ -51,6 +53,6 @@ export class CreateAirportDto extends OmitType(AirportEntity, ['id']) {
     description: "Airport's gps coordinates",
   })
   @IsString()
-  @IsNotEmpty({ message: 'request body does not contain required field GPS' })
+  @IsNotEmpty()
   gps: string;
 }

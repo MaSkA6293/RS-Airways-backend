@@ -3,6 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AirportEntity } from 'src/airport/entities/airport.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateFlightDto } from '../dto/create-flight.dto';
+import { getFlightDuration, getPrice } from 'src/utils';
 
 @Entity('flight')
 export class FlightEntity {
@@ -62,12 +63,12 @@ export class FlightEntity {
   price: number;
 
   @ManyToOne(() => AirportEntity, (airport) => airport.flightsFrom, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   from: AirportEntity;
 
   @ManyToOne(() => AirportEntity, (airport) => airport.flightsTo, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   to: AirportEntity;
 
@@ -93,7 +94,9 @@ export class FlightEntity {
 
     this.seatsTotal = createFlightDto.seatsTotal;
 
-    this.price = createFlightDto.price;
+    this.price = getPrice(
+      getFlightDuration(airports.from.gps, airports.to.gps),
+    );
 
     return this;
   }

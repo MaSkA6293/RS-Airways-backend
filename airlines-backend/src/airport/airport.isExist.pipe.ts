@@ -1,6 +1,6 @@
 import { PipeTransform, Injectable } from '@nestjs/common';
 import { entity } from 'src/interfaces/interfaces';
-import { notFoundError } from 'src/utils/utils';
+import { notFoundError } from 'src/utils';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,7 +8,7 @@ import { AirportEntity } from './entities/airport.entity';
 
 @Injectable()
 export class AirportIsExistPipe
-  implements PipeTransform<string, Promise<string>>
+  implements PipeTransform<string, Promise<AirportEntity>>
 {
   constructor(
     @InjectRepository(AirportEntity)
@@ -22,6 +22,6 @@ export class AirportIsExistPipe
 
     if (!airport) notFoundError(entity.airport);
 
-    return airport.id;
+    return airport;
   }
 }

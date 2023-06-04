@@ -34,9 +34,4 @@ export class CreateFlightDto extends OmitType(FlightEntity, ['id']) {
   @IsNumber()
   @IsNotEmpty()
   seatsTotal: number;
-
-  @ApiProperty({ example: 150, description: 'The price in USD' })
-  @IsNumber()
-  @IsNotEmpty()
-  price: number;
 }
