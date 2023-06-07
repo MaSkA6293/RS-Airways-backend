@@ -35,7 +35,6 @@ export class AirportsController {
 
   @ApiOperation({ summary: 'Get the airport by id' })
   @ApiResponse({ status: 200, type: [AirportEntity] })
-  @Get()
   @Get(':uuid')
   findById(
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,

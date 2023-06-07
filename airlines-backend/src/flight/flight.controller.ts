@@ -44,14 +44,13 @@ export class FlightController {
 
   @ApiOperation({ summary: 'Get all flights' })
   @ApiResponse({ status: 201, type: [FlightEntity] })
-  @Get('all')
+  @Get()
   searchAll() {
     return this.flightService.getAllFlights();
   }
 
   @ApiOperation({ summary: 'Get the flight by id' })
   @ApiResponse({ status: 200, type: [FlightEntity] })
-  @Get()
   @Get(':uuid')
   findById(
     @Param('uuid', ParseUUIDPipe, FlightIsExistPipe) flight: FlightEntity,
