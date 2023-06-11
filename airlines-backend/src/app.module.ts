@@ -7,6 +7,7 @@ import { AirportModule } from './airport/airport.module';
 import { FlightModule } from './flight/flight.module';
 import { LoggerModule } from './middlewares/logger/logger.module';
 import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
     AirportModule,
     FlightModule,
     LoggerModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [],

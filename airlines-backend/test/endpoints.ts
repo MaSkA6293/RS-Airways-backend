@@ -11,3 +11,10 @@ export const flightsRoutes = {
   getById: (id: string) => `/flight/${id}`,
   delete: (id: string) => `/flight/${id}`,
 };
+
+export const usersRoutes = {
+  getAll: '/user',
+  create: '/user',
+  getById: (id: string) => `/user/${id}`,
+  delete: (id: string) => `/user/${id}`,
+};
