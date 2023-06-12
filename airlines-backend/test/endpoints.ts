@@ -18,3 +18,9 @@ export const usersRoutes = {
   getById: (id: string) => `/user/${id}`,
   delete: (id: string) => `/user/${id}`,
 };
+
+export const authRoutes = {
+  signUp: '/auth/signUp',
+  signIn: '/auth/signIn',
+  refresh: '/auth/refresh',
+};

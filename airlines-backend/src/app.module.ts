@@ -8,6 +8,7 @@ import { FlightModule } from './flight/flight.module';
 import { LoggerModule } from './middlewares/logger/logger.module';
 import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     FlightModule,
     LoggerModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
