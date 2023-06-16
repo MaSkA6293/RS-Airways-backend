@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from '../dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { OrderEntity } from 'src/booking/entities/order.entity';
 
 const { BCRYPT_SALT } = process.env;
 
@@ -97,6 +98,11 @@ export class UserEntity {
     nullable: false,
   })
   citizenship: string;
+
+  @OneToMany(() => OrderEntity, (bookedTrip) => bookedTrip.user, {
+    cascade: true,
+  })
+  bookedTrips: OrderEntity[];
 
   constructor(partial: Partial<UserEntity | CreateUserDto>) {
     Object.assign(this, partial);
