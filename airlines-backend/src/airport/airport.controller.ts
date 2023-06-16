@@ -33,6 +33,18 @@ export class AirportsController {
     return this.airportsService.findAll();
   }
 
+  @ApiOperation({ summary: 'Generate mock airports' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The mock records were successfully created',
+  })
+  @HttpCode(201)
+  @Get('mock')
+  async createMockAirport(): Promise<string> {
+    await createMockAirports(this.airportsService);
+    return 'success';
+  }
+
   @ApiOperation({ summary: 'Get the airport by id' })
   @ApiResponse({ status: 200, type: [AirportEntity] })
   @Get(':uuid')
@@ -66,17 +78,5 @@ export class AirportsController {
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
   ): Promise<void> {
     return await this.airportsService.remove(airport.id);
-  }
-
-  @ApiOperation({ summary: 'Generate mock airports' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'The mock records were successfully created',
-  })
-  @HttpCode(201)
-  @Get('mock')
-  async createMockAirport(): Promise<string> {
-    await createMockAirports(this.airportsService);
-    return 'success';
   }
 }

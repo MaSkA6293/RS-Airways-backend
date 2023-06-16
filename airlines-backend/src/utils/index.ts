@@ -4,6 +4,7 @@ import { PLANE_SPEED, TARIFF } from 'src/flight/constants';
 import { FlightEntity } from 'src/flight/entities/flight.entity';
 
 import { EOL } from 'os';
+import { FlightPriceList } from 'src/flight/models/flight-price-list.model';
 
 export const notFoundError = (
   name: entity,
@@ -19,7 +20,9 @@ export const getRandomIntInclusive = (min: number, max: number): number => {
 };
 
 export const getPrice = (duration: number) => {
-  return Math.floor(duration * TARIFF);
+  const tripPrice = Math.floor(duration * TARIFF);
+
+  return JSON.stringify(new FlightPriceList(tripPrice));
 };
 
 export const getRandomDate = () => {

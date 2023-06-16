@@ -107,6 +107,8 @@ describe('Flight (e2e)', () => {
 
       const { from, to, takeOffDate, seatsAvailable, seatsTotal, id } =
         creationResponse.body;
+
+      const price = JSON.parse(creationResponse.body.price);
       expect(creationResponse.status).toBe(StatusCodes.CREATED);
 
       expect(takeOffDate).toBe(flight.takeOffDate.toISOString());
@@ -114,6 +116,11 @@ describe('Flight (e2e)', () => {
       expect(seatsTotal).toBe(flight.seatsTotal);
       expect(from.id).toBe(airportOne.body.id);
       expect(to.id).toBe(airportTwo.body.id);
+
+      expect(price).toHaveProperty('flight');
+      expect(price).toHaveProperty('specialAssistance');
+      expect(price).toHaveProperty('baggage');
+
       expect(validate(id)).toBe(true);
 
       const cleanupResponseAirportOne = await unauthorizedRequest

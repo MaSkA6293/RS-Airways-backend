@@ -56,11 +56,11 @@ export class FlightEntity {
   })
   seatsTotal: number;
 
-  @ApiProperty({ example: 150, description: 'The price in USD' })
+  @ApiProperty({ example: 150, description: 'The trip price' })
   @Column({
     nullable: false,
   })
-  price: number;
+  price: string;
 
   @ManyToOne(() => AirportEntity, (airport) => airport.flightsFrom, {
     onDelete: 'CASCADE',
