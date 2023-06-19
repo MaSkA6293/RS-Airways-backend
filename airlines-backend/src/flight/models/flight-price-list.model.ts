@@ -2,10 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Price } from './price.model';
 import { BaggagePrice } from './baggage-price.model';
 import { BAGGAGE_TARIFF } from '../constants';
+import { PassengerPrice } from './passenger-price.model';
 
 export class FlightPriceList {
   constructor(priceInEuro: number) {
-    this.flight = new Price(priceInEuro);
+    this.flight = new PassengerPrice(priceInEuro);
     this.specialAssistance = new Price(priceInEuro * 0.04);
     this.baggage = new BaggagePrice(BAGGAGE_TARIFF);
   }
@@ -14,7 +15,7 @@ export class FlightPriceList {
     example: { eur: 73, usd: 79, rub: 6570, pln: 329 },
     description: 'The price of the flight',
   })
-  flight: Price;
+  flight: PassengerPrice;
 
   @ApiProperty({
     example: { eur: 2.9, usd: 3, rub: 263, pln: 13 },

@@ -65,14 +65,16 @@ export class BookingService {
     const totalPrice = new TotalPrice();
 
     let total = 0;
+
     keys.forEach((key) => {
       totalPrice[key] = flights.map((flight) => {
         const price = flight.price as unknown as FlightPriceList;
 
-        const fare = new Price(price.flight.eur);
+        const fare = new Price(price.flight[key].eur);
         const taxServicesCharge = new Price(price.specialAssistance.eur);
 
         total += fare.eur + taxServicesCharge.eur;
+
         return {
           fare,
           taxServicesCharge,
