@@ -7,27 +7,15 @@ import {
   IsNotEmptyObject,
   IsObject,
   IsString,
-  IsUUID,
   Length,
   Validate,
   ValidateNested,
 } from 'class-validator';
 import { CustomGenderValidator } from 'src/user/CustomGenderValidator';
-import { PassengerBaggage } from './passenger-baggage.model';
 import { Type } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
-import { CreatePassengerDto } from '../dto/create-passenger.dto';
+import { PassengerBaggage } from '../models/passenger-baggage.model';
 
-export class Passenger {
-  @ApiProperty({
-    example: '0a35dd62-e09f-444b-a628-f4e7c6954f57',
-    description: 'Unique id',
-  })
-  @IsNotEmpty()
-  @IsString()
-  @IsUUID()
-  id: string;
-
+export class CreatePassengerDto {
   @ApiProperty({
     example: 'John',
     description: 'First name',
@@ -81,25 +69,4 @@ export class Passenger {
   @ValidateNested()
   @Type(() => PassengerBaggage)
   baggage: PassengerBaggage;
-
-  create(createPassengerDto: CreatePassengerDto): Passenger {
-    const {
-      firstName,
-      lastName,
-      gender,
-      dateOfBirth,
-      specialAssistance,
-      baggage,
-    } = createPassengerDto;
-
-    this.id = uuidv4();
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.gender = gender;
-    this.dateOfBirth = dateOfBirth;
-    this.specialAssistance = specialAssistance;
-    this.baggage = baggage;
-
-    return this;
-  }
 }

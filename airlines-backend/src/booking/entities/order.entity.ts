@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
+import { Trip } from '../models/trip.model';
 
 @Entity('order')
 export class OrderEntity {
@@ -21,10 +23,17 @@ export class OrderEntity {
     ]`,
     description: 'All trips that was booked in one payment',
   })
-  trip: string;
+  order: string;
 
   @ManyToOne(() => UserEntity, (user) => user.bookedTrips, {
     onDelete: 'CASCADE',
   })
   user: UserEntity;
+
+  create(trips: Trip[], user: UserEntity) {
+    this.id = uuidv4();
+    this.order = JSON.stringify(trips);
+    this.user = user;
+    return this;
+  }
 }

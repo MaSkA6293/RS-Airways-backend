@@ -1,14 +1,20 @@
+import { Type } from 'class-transformer';
+import {
+  IsDefined,
+  IsNotEmptyObject,
+  IsObject,
+  Length,
+  ValidateNested,
+} from 'class-validator';
 import { FlightEntity } from 'src/flight/entities/flight.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { TotalPrice } from './total-price.model';
-import { Passenger } from './passenger.model';
+import { CreatePassengersDto } from './create-passengers.dto';
 
-export class Trip {
+export class CreateTripDto {
   @ApiProperty({
     example: {
       adults: [
         {
-          id: '0a35dd62-e09f-444b-a628-f4e7c6954f57',
           firstName: 'John',
           lastName: 'Doe',
           gender: 'male',
@@ -26,7 +32,12 @@ export class Trip {
     },
     description: 'Passengers',
   })
-  passengers: Passenger[];
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreatePassengersDto)
+  passengers: CreatePassengersDto;
 
   @ApiProperty({
     example: [
@@ -70,7 +81,11 @@ export class Trip {
     ],
     description: 'Flights, (minLength: 1, maxLength: 2)',
   })
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @Length(1, 2)
+  @ValidateNested()
+  @Type(() => FlightEntity)
   flights: FlightEntity[];
-
-  price: TotalPrice;
 }

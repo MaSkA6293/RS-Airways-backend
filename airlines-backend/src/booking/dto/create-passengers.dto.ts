@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Passenger } from './passenger.model';
 import {
   IsDefined,
   IsNotEmptyObject,
@@ -7,38 +6,39 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { CreatePassengerDto } from './create-passenger.dto';
 
-export class Passengers {
+export class CreatePassengersDto {
   @ApiProperty({
-    type: () => Array<Passenger>,
+    type: () => Array<CreatePassengerDto>,
     description: 'Adults passengers',
   })
   @IsDefined()
   @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
-  @Type(() => Passenger)
-  adults: Passenger[];
+  @Type(() => CreatePassengerDto)
+  adults: CreatePassengerDto[];
 
   @ApiProperty({
-    type: () => Array<Passenger>,
+    type: () => Array<CreatePassengerDto>,
     description: 'Children passengers',
   })
   @IsDefined()
   @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
-  @Type(() => Passenger)
-  children: Passenger[];
+  @Type(() => CreatePassengerDto)
+  children: CreatePassengerDto[];
 
   @ApiProperty({
-    type: () => Array<Passenger>,
+    type: () => Array<CreatePassengerDto>,
     description: 'Infants passengers',
   })
   @IsDefined()
   @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
-  @Type(() => Passenger)
-  infants: Passenger[];
+  @Type(() => CreatePassengerDto)
+  infants: CreatePassengerDto[];
 }
