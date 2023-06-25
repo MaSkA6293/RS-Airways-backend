@@ -79,7 +79,7 @@ export class AuthService {
 
       const { userId } = verifyResult;
 
-      const user = await this.userService.getUserById(userId);
+      const user = await this.userService.findOne(userId);
       if (!user || user.id !== userId) return undefined;
 
       return this.generateTokens(user.id);
