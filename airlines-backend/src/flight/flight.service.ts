@@ -137,4 +137,12 @@ export class FlightService {
   async remove(id: string): Promise<void> {
     await this.flightRepository.delete(id);
   }
+
+  async getFlightById(id: string): Promise<FlightEntity | undefined> {
+    const flight = await this.flightRepository.findOne({ where: { id } });
+
+    if (!flight) return undefined;
+
+    return flight;
+  }
 }

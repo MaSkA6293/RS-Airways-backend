@@ -26,3 +26,5 @@ export class BaggagePrice {
   })
   heavy: Price;
 }
+
+export type BaggagePriceKeys = keyof typeof BaggagePrice;
