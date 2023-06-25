@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateAirportDto } from '../dto/create-airport.dto';
-import { FlightEntity } from 'src/flight/entities/flight.entity';
+import { FlightEntity } from '../../flight/entities/flight.entity';
 
 @Entity('airport')
 export class AirportEntity {
