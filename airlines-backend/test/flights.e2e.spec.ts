@@ -2,6 +2,7 @@ import { request } from './lib';
 import { StatusCodes } from 'http-status-codes';
 import { airportsRoutes, flightsRoutes } from './endpoints';
 import { validate } from 'uuid';
+import { removeMockAirports } from './utils/mockAirports';
 
 const createFlightDto = {
   fromId: '0a35dd62-e09f-444b-a628-f4e7c6954f58',
@@ -76,6 +77,8 @@ describe('Flight (e2e)', () => {
         .set(commonHeaders);
 
       expect(cleanupResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
+
+      await removeMockAirports([airportOne.body, airportTwo.body]);
     });
   });
 
@@ -138,6 +141,8 @@ describe('Flight (e2e)', () => {
         .delete(airportsRoutes.delete(airportTwo.body.id))
         .set(commonHeaders);
       expect(cleanupResponseAirportTwo.statusCode).toBe(StatusCodes.NO_CONTENT);
+
+      await removeMockAirports([airportOne.body, airportTwo.body]);
     });
 
     it('should respond with BAD_REQUEST in case of invalid required data', async () => {
@@ -176,6 +181,8 @@ describe('Flight (e2e)', () => {
           ({ statusCode }) => statusCode === StatusCodes.BAD_REQUEST,
         ),
       ).toBe(true);
+
+      await removeMockAirports([airportOne.body, airportTwo.body]);
     });
   });
 
@@ -227,6 +234,8 @@ describe('Flight (e2e)', () => {
 
       expect(checkFirstAirport.statusCode).toBe(StatusCodes.OK);
       expect(checkSecondAirport.statusCode).toBe(StatusCodes.OK);
+
+      await removeMockAirports([airportFirst.body, airportSecond.body]);
     });
 
     it('should respond with BAD_REQUEST status code in case of invalid id', async () => {

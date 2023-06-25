@@ -2,6 +2,7 @@ import { request } from './lib';
 import { StatusCodes } from 'http-status-codes';
 import { airportsRoutes, flightsRoutes } from './endpoints';
 import { validate } from 'uuid';
+import { removeMockAirports } from './utils/mockAirports';
 
 const createAirportDto = {
   country: 'TEST_COUNTRY',
@@ -156,6 +157,7 @@ describe('Airport (e2e)', () => {
       const deleteResponse = await unauthorizedRequest
         .delete(airportsRoutes.delete(idFirst))
         .set(commonHeaders);
+      await removeMockAirports([airportSecond.body]);
 
       expect(deleteResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
 
