@@ -1,7 +1,7 @@
-import { FlightEntity } from 'src/flight/entities/flight.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { TotalPrice } from './total-price.model';
 import { Passenger } from './passenger.model';
+import { FlightModel } from 'src/flight/models/flight-model';
 
 export class Trip {
   @ApiProperty({
@@ -70,7 +70,7 @@ export class Trip {
     ],
     description: 'Flights, (minLength: 1, maxLength: 2)',
   })
-  flights: FlightEntity[];
+  flights: FlightModel[];
 
   price: TotalPrice;
 }

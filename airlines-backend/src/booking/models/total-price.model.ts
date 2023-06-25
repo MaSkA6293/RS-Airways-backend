@@ -7,7 +7,7 @@ export class TotalPrice {
     example: 1,
     description: 'Count of adult passengers',
   })
-  adults: Fare[];
+  adult: Fare[];
 
   @ApiProperty({
     example: 1,
@@ -19,7 +19,18 @@ export class TotalPrice {
     example: 1,
     description: 'Count of infant passengers',
   })
-  infants: Fare[];
+  infant: Fare[];
 
   total: Price;
+
+  setTotalPrice(total: number) {
+    this.total = new Price(total);
+    return this;
+  }
+
+  addTotalPrice(priceToAdd) {
+    const { eur: totalPrice } = this.total;
+
+    this.setTotalPrice(priceToAdd + totalPrice);
+  }
 }

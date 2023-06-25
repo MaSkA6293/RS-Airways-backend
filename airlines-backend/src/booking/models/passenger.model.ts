@@ -96,7 +96,7 @@ export class Passenger {
     this.firstName = firstName;
     this.lastName = lastName;
     this.gender = gender;
-    this.dateOfBirth = dateOfBirth;
+    this.dateOfBirth = new Date(dateOfBirth);
     this.specialAssistance = specialAssistance;
     this.baggage = baggage;
 

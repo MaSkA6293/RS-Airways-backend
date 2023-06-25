@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, Max, Min, ValidateIf } from 'class-validator';
 
 export class PassengerBaggage {
   @ApiProperty({
@@ -10,7 +10,8 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(2)
-  light: number;
+  @ValidateIf((value) => value !== null)
+  light?: number;
 
   @ApiProperty({
     example: '1',
@@ -20,7 +21,8 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(1)
-  medium: number;
+  @ValidateIf((value) => value !== null)
+  medium?: number;
 
   @ApiProperty({
     example: '1',
@@ -30,5 +32,6 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(1)
-  heavy: number;
+  @ValidateIf((value) => value !== null)
+  heavy?: number;
 }
