@@ -154,12 +154,6 @@ describe('Flight (e2e)', () => {
       expect(airportOne.status).toBe(StatusCodes.CREATED);
       expect(airportTwo.status).toBe(StatusCodes.CREATED);
 
-      // fromId: '0a35dd62-e09f-444b-a628-f4e7c6954f58',
-      // toId: '0a35dd62-e09f-444b-a628-f4e7c6954f59',
-      // takeOffDate: new Date(),
-      // seatsAvailable: 100,
-      // seatsTotal: 400,
-
       const responses = await Promise.all([
         unauthorizedRequest
           .post(flightsRoutes.create)
