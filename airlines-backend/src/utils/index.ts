@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, LogLevel } from '@nestjs/common';
 import { entity } from '../interfaces/interfaces';
-import { PLANE_SPEED, TARIFF } from 'src/flight/constants';
-import { FlightEntity } from 'src/flight/entities/flight.entity';
+import { PLANE_SPEED, TARIFF } from '../flight/constants';
+import { FlightEntity } from '../flight/entities/flight.entity';
 
 import { EOL } from 'os';
-import { FlightPriceList } from 'src/flight/models/flight-price-list.model';
+import { FlightPriceList } from '../flight/models/flight-price-list.model';
 
 export const notFoundError = (
   name: entity,

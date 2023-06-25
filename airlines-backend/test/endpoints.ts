@@ -24,3 +24,8 @@ export const authRoutes = {
   signIn: '/auth/signIn',
   refresh: '/auth/refresh',
 };
+
+export const bookingRoutes = {
+  get: '/booking',
+  create: '/booking',
+};
