@@ -12,13 +12,9 @@ import {
 import { AirportService } from './airport.service';
 import { AirportEntity } from './entities/airport.entity';
 import { CreateAirportDto } from './dto/create-airport.dto';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-  ApiOkResponse,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { AirportIsExistPipe } from './airport.isExist.pipe';
+import { AirportModel } from './models/airport.model';
 
 @Controller('airport')
 @ApiTags('Airport')
@@ -26,14 +22,15 @@ export class AirportsController {
   constructor(private airportsService: AirportService) {}
 
   @ApiOperation({ summary: 'Get all the airports' })
-  @ApiResponse({ status: 200, type: [AirportEntity] })
+  @ApiResponse({ status: 200, type: [AirportModel] })
   @Get()
   async getAll(): Promise<AirportEntity[] | []> {
     return this.airportsService.findAll();
   }
 
   @ApiOperation({ summary: 'Get the airport by id' })
-  @ApiResponse({ status: 200, type: [AirportEntity] })
+  @ApiResponse({ status: 200, type: [AirportModel] })
+  @ApiParam({ type: 'String', name: 'uuid' })
   @Get(':uuid')
   findById(
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
@@ -42,8 +39,9 @@ export class AirportsController {
   }
 
   @ApiOperation({ summary: 'Create a new airport' })
-  @ApiOkResponse({ status: 201, type: [AirportEntity] })
+  @ApiResponse({ status: 201, type: [AirportModel] })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createAirportDto: CreateAirportDto,
   ): Promise<AirportEntity> {
@@ -60,6 +58,7 @@ export class AirportsController {
     description: 'The airport with this id, does not exist',
   })
   @Delete(':uuid')
+  @ApiParam({ type: 'String', name: 'uuid' })
   @HttpCode(204)
   async remove(
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
