@@ -12,7 +12,6 @@ import {
 import { AirportService } from './airport.service';
 import { AirportEntity } from './entities/airport.entity';
 import { CreateAirportDto } from './dto/create-airport.dto';
-import { createMockAirports } from './mock/createAirportsMock';
 import {
   ApiOperation,
   ApiResponse,
@@ -31,18 +30,6 @@ export class AirportsController {
   @Get()
   async getAll(): Promise<AirportEntity[] | []> {
     return this.airportsService.findAll();
-  }
-
-  @ApiOperation({ summary: 'Generate mock airports' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'The mock records were successfully created',
-  })
-  @HttpCode(201)
-  @Get('mock')
-  async createMockAirport(): Promise<string> {
-    await createMockAirports(this.airportsService);
-    return 'success';
   }
 
   @ApiOperation({ summary: 'Get the airport by id' })

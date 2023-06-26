@@ -10,6 +10,10 @@ import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { BookingModule } from './booking/booking.module';
+import { AirportService } from './airport/airport.service';
+import { FlightService } from './flight/flight.service';
+import { AirportEntity } from './airport/entities/airport.entity';
+import { FlightEntity } from './flight/entities/flight.entity';
 
 @Module({
   imports: [
@@ -17,6 +21,7 @@ import { BookingModule } from './booking/booking.module';
       envFilePath: './.env',
     }),
     TypeOrmModule.forRoot(dbConfig()),
+    TypeOrmModule.forFeature([FlightEntity, AirportEntity]),
     AirportModule,
     FlightModule,
     LoggerModule,
@@ -25,7 +30,7 @@ import { BookingModule } from './booking/booking.module';
     BookingModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [AirportService, FlightService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

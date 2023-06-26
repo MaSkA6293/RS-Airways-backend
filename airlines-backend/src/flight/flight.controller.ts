@@ -49,18 +49,6 @@ export class FlightController {
     return this.flightService.getAllFlights();
   }
 
-  @ApiOperation({ summary: 'Generate mock flights' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'The mock records were successfully created',
-  })
-  @HttpCode(201)
-  @Get('mock')
-  async createMockFlights(): Promise<string> {
-    await this.flightService.createMock();
-    return 'success';
-  }
-
   @ApiOperation({ summary: 'Get the flight by id' })
   @ApiResponse({ status: 200, type: [FlightEntity] })
   @Get(':uuid')

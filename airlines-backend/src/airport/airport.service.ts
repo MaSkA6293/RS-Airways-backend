@@ -42,4 +42,12 @@ export class AirportService {
 
     return { from, to };
   }
+
+  async findOneByGPS(gps: string): Promise<AirportEntity | undefined> {
+    return await this.airportsRepository.findOne({ where: { gps } });
+  }
+
+  async removeAll() {
+    await this.airportsRepository.query('TRUNCATE TABLE airport CASCADE');
+  }
 }
