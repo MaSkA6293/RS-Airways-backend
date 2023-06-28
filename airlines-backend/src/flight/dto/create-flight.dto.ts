@@ -3,12 +3,19 @@ import { FlightEntity } from '../entities/flight.entity';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateFlightDto extends OmitType(FlightEntity, ['id']) {
-  @ApiProperty({ type: () => FlightEntity })
+  @ApiProperty({
+    example: '1361f75f-9092-41a1-8bc7-bbd7aec51da6',
+    description: 'Unique airport id',
+  })
   @IsString()
   @IsNotEmpty()
   @IsUUID()
   fromId: string;
 
+  @ApiProperty({
+    example: '1361f75f-9092-41a1-8bc7-bbd7aec51da9',
+    description: 'Unique airport id',
+  })
   @IsString()
   @IsNotEmpty()
   @IsUUID()
@@ -16,7 +23,7 @@ export class CreateFlightDto extends OmitType(FlightEntity, ['id']) {
 
   @ApiProperty({
     example: '2024-02-20T16:30:00.000Z',
-    description: 'TakeOff date and time',
+    description: 'TakeOff date',
   })
   @IsString()
   @IsNotEmpty()

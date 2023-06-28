@@ -13,6 +13,7 @@ import {
 import {
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -21,6 +22,10 @@ import { FlightEntity } from './entities/flight.entity';
 import { FlightService } from './flight.service';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { FlightIsExistPipe } from './flight.isExist.pipe';
+import { FlightModel } from './models/flight-model';
+import { notFoundError } from 'src/utils';
+import { entity } from 'src/interfaces/interfaces';
+import { GetFlightsModel } from './models/getFlights-model';
 
 @ApiTags('Flight')
 @Controller('flight')
@@ -28,14 +33,15 @@ export class FlightController {
   constructor(private flightService: FlightService) {}
 
   @ApiOperation({ summary: 'Search Flights' })
-  @ApiResponse({ status: 201, type: [FlightEntity] })
+  @ApiResponse({ status: 200, type: [FlightModel] })
   @Post()
-  async search(@Body() query: SearchFlightDto) {
+  @HttpCode(HttpStatus.OK)
+  async search(@Body() query: SearchFlightDto): Promise<GetFlightsModel> {
     const flights = await this.flightService.getFlights(query);
 
     if (!flights) {
       throw new HttpException(
-        'One of the airports is not found',
+        'One of the airports was not found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -43,36 +49,45 @@ export class FlightController {
   }
 
   @ApiOperation({ summary: 'Get all flights' })
-  @ApiResponse({ status: 201, type: [FlightEntity] })
+  @ApiResponse({ status: 200, type: [FlightModel] })
   @Get()
-  searchAll() {
-    return this.flightService.getAllFlights();
+  @HttpCode(HttpStatus.OK)
+  async searchAll(): Promise<FlightEntity[]> {
+    return await this.flightService.getAllFlights();
   }
 
   @ApiOperation({ summary: 'Get the flight by id' })
   @ApiResponse({ status: 200, type: [FlightEntity] })
+  @ApiParam({ type: 'String', name: 'uuid' })
   @Get(':uuid')
-  findById(
+  @HttpCode(HttpStatus.OK)
+  async findById(
     @Param('uuid', ParseUUIDPipe, FlightIsExistPipe) flight: FlightEntity,
-  ): FlightEntity {
-    return flight;
+  ): Promise<FlightEntity | undefined> {
+    if (flight) return flight;
+
+    return notFoundError(entity.flight);
   }
 
   @ApiOperation({ summary: 'Create a new flight' })
   @ApiOkResponse({ status: 201, type: [FlightEntity] })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'The flight with this id, does not exist',
+  })
   @Post('create')
   @HttpCode(201)
   async create(
     @Body() createFlightDto: CreateFlightDto,
   ): Promise<FlightEntity> {
-    const createdFlight = await this.flightService.create(createFlightDto);
-    if (!createdFlight) {
+    const flight = await this.flightService.create(createFlightDto);
+    if (!flight) {
       throw new HttpException(
-        'One of the airports is not found',
+        'One of the airports was not found',
         HttpStatus.NOT_FOUND,
       );
     }
-    return createdFlight;
+    return flight;
   }
 
   @ApiOperation({ summary: 'Remove an flight by id' })
@@ -84,6 +99,7 @@ export class FlightController {
     status: HttpStatus.NOT_FOUND,
     description: 'The airport with this id, does not exist',
   })
+  @ApiParam({ type: 'String', name: 'uuid' })
   @Delete(':uuid')
   @HttpCode(204)
   async remove(

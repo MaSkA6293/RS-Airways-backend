@@ -14,6 +14,7 @@ import {
   getRandomIntInclusive,
 } from 'src/utils';
 import { AirportEntity } from 'src/airport/entities/airport.entity';
+import { GetFlightsModel } from './models/getFlights-model';
 
 @Injectable()
 export class FlightService {
@@ -32,26 +33,40 @@ export class FlightService {
     });
   }
 
-  async getFlights(query: SearchFlightDto): Promise<any> {
+  async getFlights(query: SearchFlightDto): Promise<GetFlightsModel> {
     const airports = await this.getAirports(query.fromId, query.toId);
 
     if (!airports) return undefined;
 
     if (query.backDate) {
-      const f = this.selectFlights(query.fromId, query.forwardDate);
-      const b = this.selectFlights(query.toId, query.backDate);
+      const {
+        fromId,
+        forwardDate,
+        forwardRange,
+        backwardRange,
+        toId,
+        backDate,
+      } = query;
+      const f = this.selectFlights(fromId, forwardDate, toId, forwardRange);
+      const b = this.selectFlights(toId, backDate, fromId, backwardRange);
 
       const [forwards, backwards] = await Promise.all([f, b]);
 
       return { forwards, backwards };
     }
-    const forwards = await this.selectFlights(query.fromId, query.forwardDate);
+    const { fromId, forwardDate, toId, backwardRange } = query;
+    const forwards = await this.selectFlights(
+      fromId,
+      forwardDate,
+      toId,
+      backwardRange,
+    );
     return { forwards };
   }
 
-  async selectFlights(from: string, data: string) {
+  async selectFlights(from: string, data: string, to: string, range = 1) {
     const dataStart = new Date(moment(new Date(data)).format('MM-DD-YYYY'));
-    const dataEnd = moment(new Date(dataStart)).add(1, 'day').toDate();
+    const dataEnd = moment(new Date(dataStart)).add(range, 'day').toDate();
 
     const result = await this.flightRepository.find({
       relations: {
@@ -61,6 +76,7 @@ export class FlightService {
       where: {
         takeOffDate: Between(dataStart, dataEnd),
         from: { id: from },
+        to: { id: to },
       },
     });
     return result;
