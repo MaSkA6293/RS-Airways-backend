@@ -15,6 +15,8 @@ import {
 } from 'src/utils';
 import { AirportEntity } from 'src/airport/entities/airport.entity';
 import { GetFlightsModel } from './models/getFlights-model';
+import { GetAllFlightsDto } from './dto/get-all-flights.dto';
+import { GetAllFlightsModel } from './models/get-all-flights.model';
 
 @Injectable()
 export class FlightService {
@@ -24,13 +26,21 @@ export class FlightService {
     private airportService: AirportService,
   ) {}
 
-  async getAllFlights(): Promise<FlightEntity[]> {
-    return await this.flightRepository.find({
+  async getAllFlights({
+    perPage = 20,
+    page = 1,
+  }: GetAllFlightsDto): Promise<GetAllFlightsModel> {
+    const skip = perPage * page - perPage;
+    const [data, total] = await this.flightRepository.findAndCount({
       relations: {
         from: true,
         to: true,
       },
+      take: perPage,
+      skip,
     });
+
+    return { data, total };
   }
 
   async getFlights(query: SearchFlightDto): Promise<GetFlightsModel> {

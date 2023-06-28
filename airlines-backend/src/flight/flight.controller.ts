@@ -26,6 +26,8 @@ import { FlightModel } from './models/flight-model';
 import { notFoundError } from 'src/utils';
 import { entity } from 'src/interfaces/interfaces';
 import { GetFlightsModel } from './models/getFlights-model';
+import { GetAllFlightsDto } from './dto/get-all-flights.dto';
+import { GetAllFlightsModel } from './models/get-all-flights.model';
 
 @ApiTags('Flight')
 @Controller('flight')
@@ -50,10 +52,12 @@ export class FlightController {
 
   @ApiOperation({ summary: 'Get all flights' })
   @ApiResponse({ status: 200, type: [FlightModel] })
-  @Get()
+  @Post('/all-flights')
   @HttpCode(HttpStatus.OK)
-  async searchAll(): Promise<FlightEntity[]> {
-    return await this.flightService.getAllFlights();
+  async searchAll(
+    @Body() params: GetAllFlightsDto,
+  ): Promise<GetAllFlightsModel> {
+    return await this.flightService.getAllFlights(params);
   }
 
   @ApiOperation({ summary: 'Get the flight by id' })
