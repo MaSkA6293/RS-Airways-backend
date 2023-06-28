@@ -1,7 +1,4 @@
 import { PipeTransform, Injectable } from '@nestjs/common';
-import { entity } from 'src/interfaces/interfaces';
-import { notFoundError } from 'src/utils';
-
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AirportEntity } from './entities/airport.entity';
@@ -15,12 +12,12 @@ export class AirportIsExistPipe
     private artistRepository: Repository<AirportEntity>,
   ) {}
 
-  async transform(uuid: string) {
+  async transform(uuid: string): Promise<AirportEntity | undefined> {
     const airport = await this.artistRepository.findOne({
       where: { id: uuid },
     });
 
-    if (!airport) notFoundError(entity.airport);
+    if (!airport) undefined;
 
     return airport;
   }

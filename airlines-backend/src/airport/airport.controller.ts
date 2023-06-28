@@ -15,6 +15,8 @@ import { CreateAirportDto } from './dto/create-airport.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { AirportIsExistPipe } from './airport.isExist.pipe';
 import { AirportModel } from './models/airport.model';
+import { notFoundError } from 'src/utils';
+import { entity } from 'src/interfaces/interfaces';
 
 @Controller('airport')
 @ApiTags('Airport')
@@ -35,7 +37,8 @@ export class AirportsController {
   findById(
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
   ): AirportEntity {
-    return airport;
+    if (airport) return airport;
+    return notFoundError(entity.airport);
   }
 
   @ApiOperation({ summary: 'Create a new airport' })
@@ -63,6 +66,9 @@ export class AirportsController {
   async remove(
     @Param('uuid', ParseUUIDPipe, AirportIsExistPipe) airport: AirportEntity,
   ): Promise<void> {
-    return await this.airportsService.remove(airport.id);
+    if (airport) {
+      return await this.airportsService.remove(airport.id);
+    }
+    return notFoundError(entity.airport);
   }
 }
