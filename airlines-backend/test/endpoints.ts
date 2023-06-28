@@ -6,7 +6,7 @@ export const airportsRoutes = {
 };
 
 export const flightsRoutes = {
-  getAll: '/flight',
+  getAll: '/flight/all-flights',
   create: '/flight/create',
   getById: (id: string) => `/flight/${id}`,
   delete: (id: string) => `/flight/${id}`,

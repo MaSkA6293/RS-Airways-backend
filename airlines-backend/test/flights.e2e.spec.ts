@@ -30,12 +30,21 @@ describe('Flight (e2e)', () => {
 
   describe('GET', () => {
     it('should correctly get all flights', async () => {
+      const params = {
+        perPage: 10,
+        page: 1,
+      };
+
       const response = await unauthorizedRequest
-        .get(flightsRoutes.getAll)
-        .set(commonHeaders);
+        .post(flightsRoutes.getAll)
+        .set(commonHeaders)
+        .send(params);
+
+      const { data, total } = response.body;
 
       expect(response.status).toBe(StatusCodes.OK);
-      expect(response.body).toBeInstanceOf(Array);
+      expect(data).toBeInstanceOf(Array);
+      expect(typeof total).toBe('number');
     });
 
     it('should correctly get flight by id', async () => {
