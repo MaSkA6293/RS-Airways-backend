@@ -44,16 +44,11 @@ export class AirportEntity {
   @OneToMany(() => FlightEntity, (flight) => flight.to, { cascade: true })
   flightsTo: FlightEntity[];
 
-  create(createAirportDto: CreateAirportDto) {
-    this.id = uuidv4();
+  create(createAirportDto: CreateAirportDto): AirportEntity {
+    const airport = Object.assign({}, createAirportDto);
 
-    this.key = createAirportDto.key;
-    this.gmt = createAirportDto.gmt;
-    this.country = createAirportDto.country;
-    this.city = createAirportDto.city;
-    this.name = createAirportDto.name;
-    this.gps = createAirportDto.gps;
+    airport['id'] = uuidv4();
 
-    return this;
+    return airport as AirportEntity;
   }
 }
