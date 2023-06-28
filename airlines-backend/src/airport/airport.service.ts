@@ -17,6 +17,7 @@ export class AirportService {
 
   async create(createAirportDto: CreateAirportDto): Promise<AirportEntity> {
     const airport = new AirportEntity().create(createAirportDto);
+
     const createdAirport = await this.airportsRepository.save(airport);
 
     return createdAirport;
@@ -47,7 +48,7 @@ export class AirportService {
     return await this.airportsRepository.findOne({ where: { gps } });
   }
 
-  async removeAll() {
+  async removeAll(): Promise<void> {
     await this.airportsRepository.query('TRUNCATE TABLE airport CASCADE');
   }
 }
