@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class Price {
   constructor(priceInEuro: number) {
-    this.eur = priceInEuro;
+    this.eur = Math.round(priceInEuro);
     this.usd = this.getUsdPrice();
     this.rub = this.getRubPrice();
     this.pln = this.getPlnPrice();

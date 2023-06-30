@@ -22,6 +22,9 @@ export class FlightIsExistPipe
 
     if (!flight) notFoundError(entity.airport);
 
+    const flightPrice = JSON.parse(flight.price);
+
+    flight.price = flightPrice;
     return flight;
   }
 }

@@ -61,7 +61,7 @@ export class FlightController {
   }
 
   @ApiOperation({ summary: 'Get the flight by id' })
-  @ApiResponse({ status: 200, type: [FlightEntity] })
+  @ApiResponse({ status: 200, type: FlightModel })
   @ApiParam({ type: 'String', name: 'uuid' })
   @Get(':uuid')
   @HttpCode(HttpStatus.OK)
