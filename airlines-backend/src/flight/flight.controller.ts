@@ -74,16 +74,14 @@ export class FlightController {
   }
 
   @ApiOperation({ summary: 'Create a new flight' })
-  @ApiOkResponse({ status: 201, type: [FlightEntity] })
+  @ApiOkResponse({ status: 201, type: FlightModel })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'The flight with this id, does not exist',
   })
   @Post('create')
   @HttpCode(201)
-  async create(
-    @Body() createFlightDto: CreateFlightDto,
-  ): Promise<FlightEntity> {
+  async create(@Body() createFlightDto: CreateFlightDto): Promise<FlightModel> {
     const flight = await this.flightService.create(createFlightDto);
     if (!flight) {
       throw new HttpException(

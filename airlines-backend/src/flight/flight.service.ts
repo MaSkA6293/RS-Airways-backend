@@ -17,7 +17,7 @@ import { AirportEntity } from 'src/airport/entities/airport.entity';
 import { GetFlightsModel } from './models/getFlights-model';
 import { GetAllFlightsDto } from './dto/get-all-flights.dto';
 import { GetAllFlightsModel } from './models/get-all-flights.model';
-
+import { FlightModel } from './models/flight-model';
 @Injectable()
 export class FlightService {
   constructor(
@@ -100,7 +100,7 @@ export class FlightService {
     return undefined;
   }
 
-  async create(createFlightDto: CreateFlightDto): Promise<any> {
+  async create(createFlightDto: CreateFlightDto): Promise<FlightModel> {
     const airports = await this.getAirports(
       createFlightDto.fromId,
       createFlightDto.toId,
@@ -124,7 +124,11 @@ export class FlightService {
       flightDuration,
     );
 
-    return await this.flightRepository.save(flight);
+    const savedFlight = await this.flightRepository.save(flight);
+
+    if (savedFlight) return this.extractPrice(savedFlight);
+
+    return undefined;
   }
 
   async createMock() {
@@ -170,5 +174,15 @@ export class FlightService {
     if (!flight) return undefined;
 
     return flight;
+  }
+
+  async extractPrice(flight: FlightEntity): Promise<FlightModel> {
+    const priceToObject = JSON.parse(flight.price);
+
+    const flightModel = Object.assign({}, flight);
+
+    flightModel['price'] = priceToObject;
+
+    return flightModel as unknown as FlightModel;
   }
 }

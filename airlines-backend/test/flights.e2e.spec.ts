@@ -117,10 +117,9 @@ describe('Flight (e2e)', () => {
 
       expect(creationResponse.statusCode).toBe(StatusCodes.CREATED);
 
-      const { from, to, takeOffDate, seatsAvailable, seatsTotal, id } =
+      const { from, to, takeOffDate, seatsAvailable, seatsTotal, id, price } =
         creationResponse.body;
 
-      const price = JSON.parse(creationResponse.body.price);
       expect(creationResponse.status).toBe(StatusCodes.CREATED);
 
       expect(takeOffDate).toBe(flight.takeOffDate.toISOString());
