@@ -10,13 +10,7 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import {
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SearchFlightDto } from './dto/search-flight.dto';
 import { FlightEntity } from './entities/flight.entity';
 import { FlightService } from './flight.service';
@@ -62,6 +56,10 @@ export class FlightController {
 
   @ApiOperation({ summary: 'Get the flight by id' })
   @ApiResponse({ status: 200, type: FlightModel })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'The airport with this id, does not exist',
+  })
   @ApiParam({ type: 'String', name: 'uuid' })
   @Get(':uuid')
   @HttpCode(HttpStatus.OK)
@@ -74,10 +72,10 @@ export class FlightController {
   }
 
   @ApiOperation({ summary: 'Create a new flight' })
-  @ApiOkResponse({ status: 201, type: FlightModel })
+  @ApiResponse({ status: 201, type: FlightModel })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'The flight with this id, does not exist',
+    description: 'One of the airports was not found',
   })
   @Post('create')
   @HttpCode(201)
