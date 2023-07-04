@@ -67,7 +67,7 @@ export class UserEntity {
     Object.assign(this, partial);
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     this.id = uuidv4();
 
     this.dateOfBirth = new Date(createUserDto.dateOfBirth);

@@ -16,8 +16,8 @@ export class UserIsExistPipe
   ) {}
 
   async transform(uuid: string) {
-    const user = await this.userRepository.findOne({
-      where: { id: uuid },
+    const user = await this.userRepository.findOneBy({
+      id: uuid,
     });
 
     if (!user) notFoundError(entity.user);

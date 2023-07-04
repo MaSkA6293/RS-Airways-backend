@@ -36,7 +36,7 @@ export class UserController {
   @ApiResponse({ status: 200, type: [UserModel] })
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     return this.userService.findAll();
   }
 
@@ -47,7 +47,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async findOne(
     @Param('uuid', ParseUUIDPipe, UserIsExistPipe) user: UserEntity,
-  ) {
+  ): Promise<UserEntity> {
     return user;
   }
 

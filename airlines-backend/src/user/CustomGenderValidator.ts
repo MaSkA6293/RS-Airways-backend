@@ -10,11 +10,10 @@ export class CustomGenderValidator implements ValidatorConstraintInterface {
       return false;
     }
     const value = text.toLocaleLowerCase();
-    return value === 'female' || value === 'male'; // for async validations you must return a Promise<boolean> here
+    return value === 'female' || value === 'male';
   }
 
   defaultMessage() {
-    // here you can provide default error message if validation failed
     return 'The value of the Gender field must to be Female or Male';
   }
 }

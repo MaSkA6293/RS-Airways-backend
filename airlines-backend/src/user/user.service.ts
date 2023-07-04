@@ -20,7 +20,7 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<UserEntity | undefined> {
     const user = await this.userRepository.findOneBy({ id });
 
     if (!user) return undefined;
@@ -28,11 +28,11 @@ export class UserService {
     return user;
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 
   async getUserByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email } });
+    return await this.userRepository.findOneBy({ email });
   }
 }
