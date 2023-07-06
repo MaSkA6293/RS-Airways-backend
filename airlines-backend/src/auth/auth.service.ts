@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { TokenResponse } from './models/tokenResponse.model';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(userDto: CreateUserDto) {
+  async signup(userDto: CreateUserDto): Promise<UserEntity | undefined> {
     const user = await this.userService.getUserByEmail(userDto.email);
 
     if (user) return undefined;
@@ -35,7 +36,10 @@ export class AuthService {
     return this.generateTokens(user.id);
   }
 
-  private async validateUser(email: string, password: string) {
+  private async validateUser(
+    email: string,
+    password: string,
+  ): Promise<UserEntity | undefined> {
     const user = await this.getUserByEmail(email);
 
     if (!user) return undefined;
@@ -47,43 +51,43 @@ export class AuthService {
     return user;
   }
 
-  async getUserByEmail(email: string) {
-    return await this.userRepository.findOne({
-      where: { email },
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    return await this.userRepository.findOneBy({
+      email,
     });
   }
 
-  private async generateTokens(id: string) {
+  private async generateTokens(id: string): Promise<TokenResponse> {
     const payload = { userId: id };
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.JWT_ACCESS_SECRET_KEY,
-        expiresIn: '30m',
+        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
       }),
       this.jwtService.signAsync(payload, {
         secret: process.env.JWT_REFRESH_SECRET_KEY,
-        expiresIn: '30d',
+        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
       }),
     ]);
 
     return { accessToken, refreshToken };
   }
 
-  async refresh(refreshDto: RefreshTokenDto) {
-    const { refreshToken } = refreshDto;
-
+  async refresh({
+    refreshToken,
+  }: RefreshTokenDto): Promise<TokenResponse | undefined> {
     try {
-      const verifyResult = this.jwtService.verify(refreshToken, {
+      const { userId } = this.jwtService.verify(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET_KEY,
       });
 
-      const { userId } = verifyResult;
-
       const user = await this.userService.findOne(userId);
+
       if (!user || user.id !== userId) return undefined;
 
       return this.generateTokens(user.id);
-    } catch (error) {
+    } catch {
       return undefined;
     }
   }
