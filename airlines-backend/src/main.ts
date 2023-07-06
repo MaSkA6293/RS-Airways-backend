@@ -36,9 +36,24 @@ async function bootstrap() {
     .setDescription('REST API documentation')
     .setVersion('0.0.1')
     .addTag('Air Ways')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'token',
+    )
     .build();
   const documentation = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api/docs', app, documentation);
+  SwaggerModule.setup('/api/docs', app, documentation, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   await app.listen(PORT);
 
