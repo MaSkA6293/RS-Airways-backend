@@ -25,7 +25,7 @@ export class BookingService {
 
     const trips = await this.tripService.create(order);
 
-    if (!trips) return undefined;
+    if (!trips.every((trip) => trip !== undefined)) return undefined;
 
     const createdOrder = await this.bookingRepository.save(
       new OrderEntity().create(trips, user),
@@ -36,9 +36,7 @@ export class BookingService {
     return createdOrder;
   }
 
-  async getAll(req: UserIdRequest): Promise<OrderEntity[]> {
-    const { userId } = req;
-
+  async getAll({ userId }: UserIdRequest): Promise<OrderEntity[]> {
     const user = await this.userService.findOne(userId);
 
     if (!user) return undefined;

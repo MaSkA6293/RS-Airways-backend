@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { Passenger } from './models/passenger.model';
 import { CreatePassengersDto } from './dto/create-passengers.dto';
 
@@ -9,7 +8,9 @@ export class PassengerService {
     return await this.createPassengers(passengers);
   }
 
-  async createPassengers(passengers: CreatePassengersDto) {
+  async createPassengers(
+    passengers: CreatePassengersDto,
+  ): Promise<Passenger[]> {
     const result = {};
 
     Object.keys(passengers)

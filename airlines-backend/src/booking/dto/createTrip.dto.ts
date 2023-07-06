@@ -12,7 +12,7 @@ import { CreatePassengersDto } from './create-passengers.dto';
 export class CreateTripDto {
   @ApiProperty({
     example: {
-      adults: [
+      adult: [
         {
           firstName: 'John',
           lastName: 'Doe',

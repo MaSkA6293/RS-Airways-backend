@@ -40,7 +40,7 @@ export class TripService {
     return await Promise.all(trips);
   }
 
-  async parseFlights(flight: string[]): Promise<FlightModel[]> {
+  async parseFlights(flight: string[]): Promise<FlightModel[] | undefined> {
     const flights = flight.map(async (item: string) => {
       try {
         const flight = await this.flightService.getFlightById(item);
