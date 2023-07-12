@@ -45,7 +45,6 @@ export class CreateTripDto {
     description: 'Flights Ids',
   })
   @IsDefined()
-  @IsNotEmptyObject()
   @IsArray()
   @Type(() => String)
   flights: string[];

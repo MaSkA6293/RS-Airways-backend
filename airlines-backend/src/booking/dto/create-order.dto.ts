@@ -40,6 +40,6 @@ export class CreateOrderDto {
   @IsArray()
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => Array<CreateTripDto>)
-  order: CreateTripDto[];
+  @Type(() => CreateTripDto)
+  order: Array<CreateTripDto>;
 }

@@ -10,7 +10,7 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(2)
-  @ValidateIf((value) => value !== null)
+  @ValidateIf((object) => object && typeof object.light !== 'undefined')
   light?: number;
 
   @ApiProperty({
@@ -21,7 +21,7 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(1)
-  @ValidateIf((value) => value !== null)
+  @ValidateIf((object) => object && typeof object.medium !== 'undefined')
   medium?: number;
 
   @ApiProperty({
@@ -32,6 +32,6 @@ export class PassengerBaggage {
   @IsNumber()
   @Min(0)
   @Max(1)
-  @ValidateIf((value) => value !== null)
+  @ValidateIf((object) => object && typeof object.heavy !== 'undefined')
   heavy?: number;
 }

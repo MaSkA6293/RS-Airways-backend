@@ -9,8 +9,6 @@ import { Type } from 'class-transformer';
 import { CreatePassengerDto } from './create-passenger.dto';
 
 export class CreatePassengersDto {
-  [key: string]: any;
-
   @ApiProperty({
     type: () => Array<CreatePassengerDto>,
     description: 'Adults passengers',
@@ -19,7 +17,7 @@ export class CreatePassengersDto {
   @IsArray()
   @ValidateNested()
   @Type(() => CreatePassengerDto)
-  @ValidateIf((object, value) => value !== null)
+  @ValidateIf((object) => object && typeof object.adult !== 'undefined')
   adult?: CreatePassengerDto[];
 
   @ApiProperty({
@@ -29,8 +27,8 @@ export class CreatePassengersDto {
   @IsDefined()
   @IsArray()
   @ValidateNested()
-  @Type(() => Array<CreatePassengerDto>)
-  @ValidateIf((object, value) => value !== null)
+  @Type(() => CreatePassengerDto)
+  @ValidateIf((object) => object && typeof object.children !== 'undefined')
   children?: CreatePassengerDto[];
 
   @ApiProperty({
@@ -40,7 +38,7 @@ export class CreatePassengersDto {
   @IsDefined()
   @IsArray()
   @ValidateNested()
-  @Type(() => Array<CreatePassengerDto>)
-  @ValidateIf((object, value) => value !== null)
+  @Type(() => CreatePassengerDto)
+  @ValidateIf((object) => object && typeof object.infant !== 'undefined')
   infant?: CreatePassengerDto[];
 }
