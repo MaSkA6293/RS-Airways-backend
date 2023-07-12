@@ -10,6 +10,8 @@ Luckily, they provided us with designs for reference:
 
 [copy of the layout](<https://www.figma.com/file/w4XVUmY8dAq2BxqtCISQKP/Airways-(Copy)?type=design&node-id=236%3A7209&t=fchMy1mWmOVHl6sI-1>)
 
+<details>
+      <summary>Task description</summary>
 ## Background
 
 The app called Airways - it’s an online platform designed to help users find and book flights quickly and easily. The app enables users to search for flights by selecting their desired destination, the number and age of passengers, dates, and the type of flight - one-way or round-trip.
@@ -215,3 +217,45 @@ User Account page:
 
   - \-30% for making commits within up to 3 days of the passed deadline
   - \-70% for making commits within up to 7 days of the passed deadline
+
+    </details>
+
+## Usage
+
+1. Clone this repository
+
+```
+git clone https://github.com/MaSkA6293/RS-Airways-backend.git
+```
+
+2. Check out to master branch
+
+```
+git checkout master
+```
+
+3. Go to the airlines-backend folder
+
+```
+cd airlines-backend
+```
+
+4. Install all dependencies
+
+```
+npm install
+```
+
+5. Rename .env.example to .env
+
+6. Run docker containers
+
+```
+docker compose up --build
+```
+
+7. Go to documentation page, to check possibilities
+
+```
+http://localhost:4000/api/docs#/
+```
