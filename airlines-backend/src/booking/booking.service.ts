@@ -18,22 +18,27 @@ export class BookingService {
   async create(
     { order }: CreateOrderDto,
     { userId }: UserIdRequest,
-  ): Promise<OrderEntity> {
+  ): Promise<{ errorMessage: string; order: OrderEntity | undefined }> {
     const user = await this.userService.findOne(userId);
 
-    if (!user) return undefined;
+    if (!user) return { errorMessage: 'User is not found', order: undefined };
 
     const trips = await this.tripService.create(order);
 
-    if (!trips.every((trip) => trip !== undefined)) return undefined;
+    if (!trips.every((trip) => trip !== undefined))
+      return { errorMessage: 'Trip create data is invalid', order: undefined };
 
     const createdOrder = await this.bookingRepository.save(
       new OrderEntity().create(trips, user),
     );
 
-    if (!createdOrder) return undefined;
+    if (!createdOrder)
+      return {
+        errorMessage: 'Database save operation failed',
+        order: undefined,
+      };
 
-    return createdOrder;
+    return { errorMessage: '', order: createdOrder };
   }
 
   async getAll({ userId }: UserIdRequest): Promise<OrderEntity[]> {

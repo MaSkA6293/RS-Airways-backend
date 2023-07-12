@@ -25,6 +25,8 @@ export class TripService {
           parsedFlights,
         );
 
+        if (!price) return undefined;
+
         const registeredPassengers = await this.passengerService.create(
           passengers,
         );

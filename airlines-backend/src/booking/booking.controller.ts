@@ -42,11 +42,17 @@ export class BookingController {
     @Body() createOrderDto: CreateOrderDto,
     @Request() req: UserIdRequest,
   ): Promise<OrderModel> {
-    const order = await this.bookingService.create(createOrderDto, req);
+    try {
+      const createOrder = await this.bookingService.create(createOrderDto, req);
 
-    if (order) return order as unknown as OrderModel;
+      const { errorMessage, order } = createOrder;
 
-    throw new HttpException(`Bad request`, HttpStatus.BAD_REQUEST);
+      if (errorMessage === '') return order as unknown as OrderModel;
+
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    } catch {
+      throw new HttpException(`Bad request`, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @ApiOperation({ summary: "Get all user's orders" })

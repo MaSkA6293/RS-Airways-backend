@@ -8,6 +8,7 @@ import {
   BaggagePrice,
   BaggagePriceKeys,
 } from 'src/flight/models/baggage-price.model';
+import { PassengerType } from './interfaces/Passenger-type';
 
 @Injectable()
 export class PriceService {
@@ -17,7 +18,11 @@ export class PriceService {
   ): Promise<TotalPrice> {
     const totalPrice = new TotalPrice();
 
-    Object.keys(passengers).forEach((passengerType, index) => {
+    const passengerKeys = Object.keys(passengers);
+
+    if (!this.checkPassengers(passengerKeys)) return undefined;
+
+    passengerKeys.forEach((passengerType, index) => {
       totalPrice[passengerType] = passengers[passengerType].map((passenger) => {
         const fare = new Fare();
 
@@ -89,5 +94,13 @@ export class PriceService {
 
   calculateFare(fares: number[]): number {
     return fares.reduce((prev, next) => prev + next);
+  }
+
+  checkPassengers(passengerKeys): boolean {
+    return passengerKeys
+      .map((i: string | number) =>
+        typeof PassengerType[i] !== 'undefined' ? true : false,
+      )
+      .every((el: boolean) => (el ? true : false));
   }
 }
